@@ -1,0 +1,6 @@
+const lang=document.querySelector('#lang');
+function applyLanguage(next){document.documentElement.lang=next;document.querySelectorAll('[data-en][data-sv]').forEach(el=>el.textContent=el.dataset[next]);if(lang)lang.textContent=next==='en'?'SV':'EN';document.querySelectorAll('a[href]').forEach(a=>{const href=a.getAttribute('href');if(/^(index|echoes|andyblue|toaster)\.html(?:[?#]|$)/.test(href)){const [base,hash]=href.split('#');a.setAttribute('href',base.split('?')[0]+'?lang='+next+(hash?'#'+hash:''));}});}
+let initial=new URLSearchParams(location.search).get('lang');applyLanguage(initial==='sv'?'sv':'en');
+lang?.addEventListener('click',()=>{const next=document.documentElement.lang==='en'?'sv':'en';applyLanguage(next);try{const url=new URL(location.href);url.searchParams.set('lang',next);history.replaceState(null,'',url.href);}catch(e){/* Local file URLs may restrict history changes. */}});
+const film=document.querySelector('#film');document.querySelector('#unknown')?.addEventListener('click',()=>film?.showModal());document.querySelector('#close')?.addEventListener('click',()=>film?.close());
+function updateFilmClose(){const close=document.querySelector("#close");if(close)close.setAttribute("aria-label",document.documentElement.lang==="sv"?"Stäng":"Close");}updateFilmClose();lang?.addEventListener("click",updateFilmClose);
